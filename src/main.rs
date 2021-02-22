@@ -1,3 +1,11 @@
+use chrono::{DateTime, Utc, NaiveDateTime, Local};
+
+const CONFIG_DIR = "~/.local/mindful/";
+
+fn inn(){
+    println!("Checking inn");
+    println!("Date is {}...", Local::now());
+}
 
 fn main() {
 
@@ -7,7 +15,7 @@ fn main() {
 
     match & first_arg[..]{
 
-	"in" => println!("Check inn..."),
+	"in" => inn(),
 	"help" => println!("Print help text"),
 
 	_ => println!("No argument given")
