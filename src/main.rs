@@ -1,17 +1,18 @@
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
 
-const CONFIG_DIR = "~/.local/mindful/";
+const CONFIG_DIR :&str = "~/.local/mindful/";
 
 fn inn(){
     println!("Checking inn");
-    println!("Date is {}...", Local::now());
+
+    let now = Local::now();
+    
+    println!("Date is {}...", now);
 }
 
 fn main() {
 
     let first_arg = std::env::args().nth(1).expect("help");
-    println!("Hello, world!");
-
 
     match & first_arg[..]{
 
