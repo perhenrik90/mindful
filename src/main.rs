@@ -1,3 +1,5 @@
+use std::fs::File;
+
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
 
 const CONFIG_DIR :&str = "~/.local/mindful/";
@@ -7,7 +9,9 @@ fn inn(){
 
     let now = Local::now();
     
-    println!("Date is {}...", now);
+    let mut file = File::create("test.txt");
+    file.close();
+
 }
 
 fn main() {
