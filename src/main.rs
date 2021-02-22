@@ -1,17 +1,16 @@
 use std::fs::File;
+use std::io::Write;
 
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
 
 const CONFIG_DIR :&str = "~/.local/mindful/";
 
-fn inn(){
+fn inn()  { 
     println!("Checking inn");
 
     let now = Local::now();
-    
-    let mut file = File::create("test.txt");
-    file.close();
-
+    let mut f = File::create("test.txt").expect("Unable to open");
+    f.write( &now.to_rfc3339().as_bytes());
 }
 
 fn main() {
