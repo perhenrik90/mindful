@@ -6,25 +6,29 @@ use std::ffi::OsStr;
 
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
 
-static CONFIG_DIR :&String = ""
 
+fn get_config(option: &str) -> String{
+    let mut  config :String =  env::var_os("HOME").expect("Error in env").into_string().expect("Could not parese to string");
 
-fn cmd_init(){
-
-    let mut home = env::var_os("HOME").expect("Error in env");
-
-    CONFIG_DIR = format!("{}{}", &home.into_string().expect("Can not parse string")[..], CONFIG_DIR);
-
-    println!("Config is {}", );
+    // Make shure that mindful config directory exists
+    config.push_str("/.local/share/mindful/");
+    fs::create_dir_all(&config).expect("Can not create config directory");
+    config.push_str(option);
+    return config
 }
-fn inn()  {
+
+
+
+
+fn check_in() {
     /**
-     * Checking mindful inn
+     * Checking mindful in
      **/
-    println!("Checking inn");
+    println!("Checking in");
 
     let now = Local::now();
-    let filepath = format!("{}{}", CONFIG_DIR, "test.txt");
+    let filepath = get_config("in");
+
     println!("{}", filepath);
     let mut f = File::create(filepath).expect("Unable to open");
     f.write( &now.to_rfc3339().as_bytes());
@@ -38,12 +42,11 @@ fn out() {
 fn main() {
 
 
-    cmd_init();
     let first_arg = std::env::args().nth(1).expect("help");
 
     match & first_arg[..]{
 
-	"in" => inn(),
+	"in" => check_in(),
 	"out" => out(),
 	"help" => println!("Print help text"),
 
