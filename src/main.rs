@@ -44,9 +44,13 @@ fn out() {
      **/
     println!("Checking out");
     let filepath = get_config("in");
-    let inn_content = fs::read_to_string(filepath).expect("Can not open in timestamp");
+    let in_content = fs::read_to_string(filepath).expect("Can not open in timestamp");
+    let in_date = DateTime::parse_from_rfc3339( &in_content[..]).expect("Could not parse datetime string");
 
-    println!("Inn timestamp {}", inn_content);
+    // Compute time diference
+    let now = Local::now();
+    let diff = now.signed_duration_since(in_date);
+    println!("You have meditated for {} minutes. ^^,", diff.num_minutes());
     
 }
 fn main() {
@@ -58,7 +62,7 @@ fn main() {
 
 	"in" => check_in(),
 	"out" => out(),
-	"help" => println!("Print help text"),
+	"help" => println!("mindful <option> | in for checking in, and out for checking out."),
 
 	_ => println!("No argument given")
     }
