@@ -3,6 +3,9 @@ use std::fs;
 use std::env;
 use std::io::Write;
 use std::ffi::OsStr;
+use std::thread;
+use std::time;
+use parse_duration::parse;
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
 
 /****************************************************************
@@ -22,7 +25,13 @@ fn get_config(option: &str) -> String{
 }
 
 
+fn timer(time_expr: &str){
+    println!("Timestr {}", time_expr);
+    let dur = parse("1m").expect("Could not parse date");
 
+    thread::sleep(dur);
+    
+}
 
 fn check_in() {
     /**
@@ -62,6 +71,7 @@ fn main() {
 
 	"in" => check_in(),
 	"out" => out(),
+	"timer" => timer("2 seconds"),
 	"help" => println!("mindful <option> | in for checking in, and out for checking out."),
 
 	_ => println!("No argument given")
