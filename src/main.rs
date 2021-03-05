@@ -27,10 +27,10 @@ fn get_config(option: &str) -> String{
 
 fn timer(time_expr: String){
     println!("Timestr {}", time_expr);
-    let dur = parse("2s").expect("Could not parse date");
+    let dur = parse(&time_expr).expect("Could not parse date");
 
     thread::sleep(dur);
-    println!("Done! ");
+    println!("Done! \x07");
 }
 
 fn check_in() {
