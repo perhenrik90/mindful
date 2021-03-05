@@ -25,12 +25,12 @@ fn get_config(option: &str) -> String{
 }
 
 
-fn timer(time_expr: &str){
+fn timer(time_expr: String){
     println!("Timestr {}", time_expr);
-    let dur = parse("1m").expect("Could not parse date");
+    let dur = parse("2s").expect("Could not parse date");
 
     thread::sleep(dur);
-    
+    println!("Done! ");
 }
 
 fn check_in() {
@@ -71,7 +71,7 @@ fn main() {
 
 	"in" => check_in(),
 	"out" => out(),
-	"timer" => timer("2 seconds"),
+	"timer" => timer( std::env::args().nth(2).expect("Timer needs a second argument")),
 	"help" => println!("mindful <option> | in for checking in, and out for checking out."),
 
 	_ => println!("No argument given")
