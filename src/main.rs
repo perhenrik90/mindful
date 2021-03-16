@@ -24,7 +24,7 @@ fn get_config(option: &str) -> String{
     return config
 }
 
-fn prepare_database(){
+fn prepare_database() -> sqlite::Connection {
     /**
      * Prepare database schema and connection to local SQL lite
      **/
@@ -33,10 +33,10 @@ fn prepare_database(){
 
     con.execute(
 	"
-        CREATE TABLE IF NOT EXISTS mindful_samples (id INTEGER PRIMARY KEY AUTOINCREMENT, to_sample DATETIME, from_sample DATETIME, type VARCHAR DEFAULT 'Mindful CLI');
+        CREATE TABLE IF NOT EXISTS mindful_sample (id INTEGER PRIMARY KEY AUTOINCREMENT, to_sample DATETIME, from_sample DATETIME, minutes INTEGER, type VARCHAR DEFAULT 'Mindful CLI');
         ",
     ).expect("Can not create mindful_samples table.");
-    
+    return con;
 }
 
 
@@ -75,7 +75,11 @@ fn out() {
     let now = Local::now();
     let diff = now.signed_duration_since(in_date);
     println!("You have meditated for {} minutes. ^^,", diff.num_minutes());
-    
+
+    let minutes  = diff.num_minutes();
+    let con = prepare_database();
+    let sql = format!("INSERT INTO mindful_sample (from_sample, to_sample, minutes) VALUES ('{}','{}','{}');", in_date, now, minutes);
+    con.execute(sql).expect("Can not insert sample");
 }
 fn main() {
 
