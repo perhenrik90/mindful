@@ -24,6 +24,21 @@ fn get_config(option: &str) -> String{
     return config
 }
 
+fn prepare_database(){
+    /**
+     * Prepare database schema and connection to local SQL lite
+     **/
+    let db = get_config("mindful.db");
+    let con = sqlite::open(db).expect("Can not open database");
+
+    con.execute(
+	"
+        CREATE TABLE IF NOT EXISTS mindful_samples (id INTEGER PRIMARY KEY AUTOINCREMENT, to_sample DATETIME, from_sample DATETIME, type VARCHAR DEFAULT 'Mindful CLI');
+        ",
+    ).expect("Can not create mindful_samples table.");
+    
+}
+
 
 fn timer(time_expr: String){
     println!("Timestr {}", time_expr);
@@ -64,7 +79,7 @@ fn out() {
 }
 fn main() {
 
-
+    prepare_database();
     let first_arg = std::env::args().nth(1).expect("help");
 
     match & first_arg[..]{
