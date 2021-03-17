@@ -44,8 +44,18 @@ fn timer(time_expr: String){
     println!("Timestr {}", time_expr);
     let dur = parse(&time_expr).expect("Could not parse date");
 
+    let inn = Local::now();
     thread::sleep(dur);
+    
     println!("Done! \x07");
+
+    let out = Local::now();
+    let diff = out.signed_duration_since(inn);
+
+    let minutes  = diff.num_minutes();
+    let con = prepare_database();
+    let sql = format!("INSERT INTO mindful_sample (from_sample, to_sample, minutes) VALUES ('{}','{}','{}');", inn, out, minutes);
+    con.execute(sql).expect("Can not insert sample");
 }
 
 fn check_in() {
