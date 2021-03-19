@@ -5,12 +5,12 @@ Sqlite database.
 
 ## Usage
 
-> mindful help         # shows help
-> mindful in           # start mindful session
-> mindful out          # stop mindful session
-> mindful timer 1m     # set mindful timer for one minute
-> mindful dump         # dump database to standard out
-> mindful dump > a.csv # dump database as CSV file
+* mindful help         # shows help
+* mindful in           # start mindful session
+* mindful out          # stop mindful session
+* mindful timer 1m     # set mindful timer for one minute
+* mindful dump         # dump database to standard out
+* mindful dump > a.csv # dump database as CSV file
 
 ## Development
 
