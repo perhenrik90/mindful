@@ -7,6 +7,7 @@ use std::thread;
 use std::time;
 use parse_duration::parse;
 use chrono::{DateTime, Utc, NaiveDateTime, Local};
+use sqlite::State;
 
 /****************************************************************
  * MINDFUL
@@ -96,31 +97,38 @@ fn out() {
 
 fn dump_data(){
     /**
-     * Dump database as CSV
+     * Dump database as CSV (standard out)
      **/
-    conn = prepare_database();
+    println!("Timestamp from;Timestamp to;Minutes");
+    let conn = prepare_database();
+    let mut statement = conn.prepare("SELECT from_sample, to_sample, minutes FROM mindful_sample;").unwrap();
+    while let State::Row = statement.next().unwrap() {
 
-    // SQL query here
+	let to = statement.read::<String>(0).unwrap();
+	let from = statement.read::<String>(1).unwrap();
+	let minutes = statement.read::<i64>(2).unwrap();
+	
+	println!("{};{};{}", from,to,minutes);	
+    }
 }
 
 
 
 fn main() {
 
+    // Open database (ensure it exists)
     prepare_database();
     let first_arg = std::env::args().nth(1).expect("help");
 
+    // Route sub command
     match & first_arg[..]{
 
 	"in" => check_in(),
 	"out" => out(),
 	"timer" => timer( std::env::args().nth(2).expect("Timer needs a second argument")),
+	"dump" => dump_data(),
 	"help" => println!("mindful <option> | in for checking in, and out for checking out."),
 
 	_ => println!("No argument given")
     }
-
-
-
-
 }
