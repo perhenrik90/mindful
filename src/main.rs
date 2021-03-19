@@ -91,6 +91,20 @@ fn out() {
     let sql = format!("INSERT INTO mindful_sample (from_sample, to_sample, minutes) VALUES ('{}','{}','{}');", in_date, now, minutes);
     con.execute(sql).expect("Can not insert sample");
 }
+
+
+
+fn dump_data(){
+    /**
+     * Dump database as CSV
+     **/
+    conn = prepare_database();
+
+    // SQL query here
+}
+
+
+
 fn main() {
 
     prepare_database();
